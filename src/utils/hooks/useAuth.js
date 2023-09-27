@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser, initialState } from 'store/auth/userSlice'
-import { apiSignIn, apiSignOut, apiSignUp } from 'services/AuthService'
+import { apiSignIn,  apiSignUp } from 'services/AuthService'
 import { onSignInSuccess, onSignOutSuccess } from 'store/auth/sessionSlice'
 import appConfig from 'configs/app.config'
 import { REDIRECT_URL_KEY } from 'constants/app.constant'
@@ -18,32 +18,39 @@ function useAuth() {
     const { token, signedIn } = useSelector((state) => state.auth.session)
 
     const signIn = async (values) => {
-        try {
-			const resp = await apiSignIn(values)
+		try {
+			const resp = await apiSignIn(values);
 			if (resp.data) {
-				const { token } = resp.data
-				dispatch(onSignInSuccess(token))
-				if(resp.data.user) {
-					dispatch(setUser(resp.data.user || { 
-						avatar: '', 
-						userName: 'Anonymous', 
-						authority: ['USER'], 
-						email: ''
-					}))
-				}
-				const redirectUrl = query.get(REDIRECT_URL_KEY)
-				navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath)
-                return {
-                    status: 'success',
-                    message: ''
-                }
+				console.log(resp);
+			  const { token } = resp.data;
+			//   const { role_name } = resp.data.data;
+			  dispatch(onSignInSuccess(token));
+			  // console.log(resp.data.data);
+			  if (resp.data.data) {
+				dispatch(
+				  setUser(
+					resp.data.data || {
+					//   avatar: "",
+					//   userName: "Anonymous",
+					  authority: ["role_name"],
+					  email: "dhalisuman001@gmail.com",
+					}
+				  )
+				);
+			  }
+			  const redirectUrl = query.get(REDIRECT_URL_KEY);
+			  navigate(redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath);
+			  return {
+				status: "success",
+				message: "",
+			  };
 			}
-		} catch (errors) {
+		  } catch (errors) {
 			return {
-                status: 'failed',
-                message: errors?.response?.data?.message || errors.toString()
-            }
-		}
+			  status: "failed",
+			  message: errors?.response?.data?.message || errors.toString(),
+			};
+		  }
     }
 
 	const signUp = async (values) => {
@@ -82,7 +89,7 @@ function useAuth() {
 	}
 
     const signOut = async () => {
-		await apiSignOut()
+		// await apiSignOut()
 		handleSignOut()
 	}
     

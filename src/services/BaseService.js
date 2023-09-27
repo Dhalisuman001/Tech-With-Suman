@@ -14,6 +14,7 @@ const BaseService = axios.create({
 })
 
 BaseService.interceptors.request.use(config => {
+    console.log(config);
 
     const rawPersistData = localStorage.getItem(PERSIST_STORE_NAME)
     const persistData = deepParseJson(rawPersistData)
@@ -26,6 +27,7 @@ BaseService.interceptors.request.use(config => {
     
     return config
 }, error => {
+    console.log('error');
     return Promise.reject(error)
 })
 

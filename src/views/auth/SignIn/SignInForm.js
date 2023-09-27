@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import useAuth from 'utils/hooks/useAuth'
 
 const validationSchema = Yup.object().shape({
-	userName: Yup.string().required('Please enter your user name'),
+	email: Yup.string().required('Please enter your email').email(),
 	password: Yup.string().required('Please enter your password'),
 	rememberMe: Yup.bool()
 })
@@ -26,10 +26,10 @@ const SignInForm = props => {
 	const { signIn } = useAuth()
 
 	const onSignIn = async (values, setSubmitting) => {
-		const { userName, password } = values
+
 		setSubmitting(true)
-		
-		const result = await signIn({ userName, password })
+				
+		const result = await signIn( values )
 
 		if (result.status === 'failed') {
 			setMessage(result.message)
@@ -44,13 +44,14 @@ const SignInForm = props => {
 			<Formik
 				// Remove this initial value
 				initialValues={{
-					userName: 'admin', 
-					password: '123Qwe', 
-					rememberMe: true 
+					email: '', 
+					rememberMe: true ,
+					password:"",
 				}}
 				validationSchema={validationSchema}
 				onSubmit={(values, { setSubmitting }) => {
 					if(!disableSubmit) {
+						// console.log('calling');
 						onSignIn(values, setSubmitting)
 					} else {
 						setSubmitting(false)
@@ -61,15 +62,15 @@ const SignInForm = props => {
 					<Form>
 						<FormContainer>
 							<FormItem
-								label="User Name"
-								invalid={errors.userName && touched.userName}
-								errorMessage={errors.userName}
+								label="Email"
+								invalid={errors.email && touched.email}
+								errorMessage={errors.email}
 							>
 								<Field 
-									type="text" 
+									type="email" 
 									autoComplete="off" 
-									name="userName" 
-									placeholder="User Name" 
+									name="email" 
+									placeholder="Email" 
 									component={Input} 
 								/>
 							</FormItem>
@@ -92,7 +93,10 @@ const SignInForm = props => {
 								</ActionLink>
 							</div>
 							<Button block loading={isSubmitting} variant="solid" type="submit">
-								{ isSubmitting ? 'Signing in...' : 'Sign In' }
+							{
+								isSubmitting ? 'Signing in...': 'Sign In'
+							}
+								
 							</Button>
 							<div className="mt-4 text-center">
 								<span>Don't have an account yet? </span>

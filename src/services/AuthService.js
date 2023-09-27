@@ -2,7 +2,7 @@ import ApiService from './ApiService'
 
 export async function apiSignIn (data) {
     return ApiService.fetchData({
-        url: '/sign-in',
+        url: '/user/login',
         method: 'post',
         data
     })
