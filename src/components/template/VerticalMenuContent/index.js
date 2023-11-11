@@ -75,10 +75,10 @@ const VerticalMenuContent = props => {
 
 			if (nav.subMenu.length > 0) {
 				return (
-					<MenuGroup key={nav.key} label={t(nav.translateKey) || nav.title }>
+					<MenuGroup key={nav.key} label={t(nav.title || nav.translateKey)  }>
 						{
 							nav.subMenu.map(subNav => (
-								subNav.subMenu.length > 0 
+								subNav.subMenu?.length > 0 
 								? 
 								<VerticalCollapsedMenuItem 
 									key={subNav.key} 

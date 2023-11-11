@@ -1,9 +1,10 @@
 import React, { cloneElement } from 'react'
-import { Avatar } from 'components/ui'
-import Logo from 'components/template/Logo'
-import BG_IMG from '../../../assets/img/auth-cover-bg.png'
-import { APP_NAME } from 'constants/app.constant'
+// import { Avatar } from 'components/ui'
+// import Logo from 'components/template/Logo'
+// import BG_IMG from '../../../assets/img/auth-cover-bg.png'
+// import { APP_NAME } from 'constants/app.constant'
 // console.log(BG_IMG);
+
 const Side = ({children, content, ...rest }) => {
 	return (
 		<div className="grid lg:grid-cols-3 h-full">
