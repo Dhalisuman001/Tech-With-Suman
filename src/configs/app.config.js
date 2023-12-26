@@ -1,5 +1,5 @@
 const appConfig = {
-  apiPrefix: "http://localhost:4000/api",
+  apiPrefix: "https://coder-hope-api-production.up.railway.app/api",
   authenticatedEntryPath: "/home",
   unAuthenticatedEntryPath: "/sign-in",
   tourPath: "/",

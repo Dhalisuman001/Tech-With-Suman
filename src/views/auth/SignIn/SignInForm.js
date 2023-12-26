@@ -113,7 +113,6 @@ const SignInForm = (props) => {
                 block
                 loading={isSubmitting}
                 variant="solid"
-                // color="#050505"
                 type="submit"
               >
                 {isSubmitting ? "Signing in..." : "Sign In"}

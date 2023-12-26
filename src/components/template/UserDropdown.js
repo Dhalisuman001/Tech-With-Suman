@@ -14,7 +14,7 @@ import { AiOutlineSetting } from "react-icons/ai";
 const dropdownItemList = [
   {
     label: "Write",
-    path: "/home",
+    path: "/blog-editor",
     icon: <BsPencilSquare />,
   },
   {
