@@ -26,33 +26,48 @@ const Editor = () => {
 
     return valid;
   };
+
+  const handleKey = (e) => {
+    // console.log(e);
+    if (e.keyCode === 13) {
+      e.preventDefault();
+    }
+  };
+
+  const handleTitleChange = (e) => {
+    const input = e.target;
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
+  };
   return (
-    <div className="mx-auto max-w-[900px] w-full ">
-      <div className="cursor-pointer relative  aspect-video border-gray hover:opacity-80 ">
-        {uploading ? (
-          <Skeleton className="w-full h-full" />
-        ) : (
-          <Upload
-            className=""
-            showList={false}
-            uploadLimit={1}
-            beforeUpload={beforeUpload}
-            name="image"
-            onChange={(e) => onFileUpload(e, setImage)}
-          >
+    <div className="mx-auto w-full max-w-[900px]  ">
+      <div className="cursor-pointer relative  aspect-video border-gray hover:opacity-80  text-center bg-white">
+        <Upload
+          className="aspect-video  max-w-[700px] w-full h-full"
+          showList={false}
+          uploadLimit={1}
+          beforeUpload={beforeUpload}
+          name="image"
+          onChange={(e) => onFileUpload(e, setImage)}
+        >
+          {uploading ? (
+            <Skeleton className="aspect-video max-w-[700px] w-full h-full" />
+          ) : (
             <Avatar
-              // size={80}
-              className="w-full h-full"
+              className="w-full h-full max-w-[700px]"
               shape="box"
               src={image}
             />
-          </Upload>
-        )}
+          )}
+        </Upload>
+
+        <textarea
+          placeholder="Blog Title"
+          className=" h-16 text-4xl font-medium w-full  outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
+          onKeyDown={handleKey}
+          onChange={handleTitleChange}
+        ></textarea>
       </div>
-      <textarea
-        placeholder="Blog Title"
-        className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
-      ></textarea>
     </div>
   );
 };
