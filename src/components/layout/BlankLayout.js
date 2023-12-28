@@ -24,7 +24,7 @@ const HeaderActionsEnd = () => {
 
 const BlankLayout = (props) => {
   return (
-    <div className="app-layout-blank flex flex-auto flex-col h-[100vh] bg-white">
+    <div className="app-layout-blank flex flex-auto flex-col h-[100vh]">
       <Header
         className="shadow"
         headerStart={<HeaderActionsStart />}
