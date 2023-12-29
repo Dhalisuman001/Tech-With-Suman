@@ -9,6 +9,7 @@ import InlineCode from "@editorjs/inline-code";
 import Marker from "@editorjs/marker";
 import Link from "@editorjs/link";
 import Quate from "@editorjs/quote";
+import axios from "axios";
 
 const uploadImageByUrl = (e) => {
   console.log(e);
@@ -27,6 +28,25 @@ const uploadImageByUrl = (e) => {
     };
   });
 };
+const uploadImageByFile = async (e) => {
+  try {
+    const img = new FormData();
+    img.append("image", e);
+    const { data } = await axios.post(
+      `http://ch-api.suman-tech.in/api/get-url`,
+      img
+    );
+
+    console.log(data);
+
+    return {
+      success: true,
+      file: { url: `http://ch-api.suman-tech.in/${data.localpath}` },
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const tools = {
   embed: Embed,
@@ -39,7 +59,7 @@ export const tools = {
     config: {
       uploader: {
         uploadByUrl: uploadImageByUrl,
-        // uploadByFile: () => {},
+        uploadByFile: uploadImageByFile,
       },
     },
   },
