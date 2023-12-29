@@ -6,23 +6,15 @@ import EditorJS from "@editorjs/editorjs";
 import { tools } from "./components/Tools";
 import { StickyFooter } from "components/shared";
 import { toast, Toaster } from "react-hot-toast";
-
-// const blogStructure = {
-//   title: "",
-//   banner: "",
-//   content: [],
-//   tags: [],
-//   des: "",
-//   author: {
-//     personal_info: {},
-//   },
-// };
+import { setBlog } from "store/blog/publishSlice";
+import { useDispatch } from "react-redux";
 
 const Editor = () => {
   const { cloudinaryUploadImg, uploading } = useImageUpload();
   const [banner, setBanner] = useState("");
   const [title, setTitle] = useState("");
   const [textEditor, setTextEditor] = useState({ isReady: false });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTextEditor(
@@ -83,12 +75,15 @@ const Editor = () => {
     if (textEditor.isReady) {
       try {
         const res = await textEditor.save();
-        console.log(res);
+        if (res.blocks.length) {
+          console.log(res);
+          dispatch(setBlog({ content: res, title, banner }));
+        } else {
+          return toast.error("Write something in your blog tio publish it!");
+        }
       } catch (error) {
         console.log(error);
       }
-    } else {
-      return toast.error("Write something in your blog tio publish it!");
     }
   };
 

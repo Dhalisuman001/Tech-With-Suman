@@ -1,16 +1,18 @@
-import { combineReducers } from 'redux'
-import theme from './theme/themeSlice'
-import auth from './auth'
-import base from './base'
+import { combineReducers } from "redux";
+import theme from "./theme/themeSlice";
+import auth from "./auth";
+import base from "./base";
+import blog from "./blog";
 
 const rootReducer = (asyncReducers) => (state, action) => {
-    const combinedReducer = combineReducers({
-        theme,
-        auth,
-        base,
-        ...asyncReducers,
-    })
-    return combinedReducer(state, action)
-}
-  
-export default rootReducer
+  const combinedReducer = combineReducers({
+    theme,
+    auth,
+    base,
+    blog,
+    ...asyncReducers,
+  });
+  return combinedReducer(state, action);
+};
+
+export default rootReducer;
