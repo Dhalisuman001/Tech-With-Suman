@@ -4,6 +4,8 @@ import { FiX } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsEditor } from "store/blog/commonSlice";
 import { setBlog } from "store/blog/publishSlice";
+import TagsInput from "react-tagsinput";
+import "react-tagsinput/react-tagsinput.css";
 
 const characterLimit = 200;
 
@@ -24,7 +26,7 @@ const PublishForm = () => {
   const dispatch = useDispatch();
   const {
     blog,
-    blog: { content, banner, title, des },
+    blog: { banner, title, des, tags },
   } = useSelector((state) => state.blog);
 
   const handelOnCancel = () => {
@@ -44,6 +46,11 @@ const PublishForm = () => {
     if (e.keyCode === 13) {
       e.preventDefault();
     }
+  };
+
+  const handelTags = (e) => {
+    dispatch(setBlog({ ...blog, tags: e }));
+    console.log(e);
   };
   return (
     <div className="w-full">
@@ -94,12 +101,24 @@ const PublishForm = () => {
           <p className="text-gray-500 mb-2 mt-3">
             Topics - ( Helps is searching and ranking your blog post )
           </p>
-          {/* <Select
-            isMulti
-            placeholder="tags"
-            defaultValue={[colourOptions[2], colourOptions[3]]}
-            options={colourOptions}
-          /> */}
+          <TagsInput
+            type="text"
+            value={tags}
+            preventSubmit={false}
+            onChange={handelTags}
+            maxTags={10}
+            onlyUnique={true}
+            className="bg-gray-200 rounded items-center pt-1 pl-2  "
+            inputProps={{
+              className: "react-tagsinput-input ",
+              placeholder: "Tags",
+            }}
+            tagProps={{
+              className:
+                "bg-white rounded react-tagsinput-tag-custom  text-gray-900 inline-block  font-sans text-sm mt-[5px] mr-[5px] p-[5px]",
+              classNameRemove: "react-tagsinput-remove",
+            }}
+          />
         </div>
       </section>
     </div>
