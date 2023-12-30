@@ -1,13 +1,18 @@
-import { Avatar, Input } from "components/ui";
-import React from "react";
+import { Avatar, Button, Input } from "components/ui";
+import React, { useState } from "react";
 import { FiX } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsEditor } from "store/blog/commonSlice";
-import { setBlog } from "store/blog/publishSlice";
+import { setIsEditor } from "../../store/stateSlice";
+import { setBlog, setInitial } from "../../store/dataSlice";
 import TagsInput from "react-tagsinput";
 import "react-tagsinput/react-tagsinput.css";
+import { StickyFooter } from "components/shared";
+import { toast, Toaster } from "react-hot-toast";
+import { apiCreateBlog } from "services/BlogService";
+import { useNavigate } from "react-router-dom";
 
 const characterLimit = 200;
+const tagsLimit = 10;
 
 // const colourOptions = [
 //   { value: "ocean", label: "Ocean", color: "#00B8D9" },
@@ -24,10 +29,13 @@ const characterLimit = 200;
 
 const PublishForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
-    blog,
-    blog: { banner, title, des, tags },
+    data,
+    data: { banner, title, des, tags, content },
   } = useSelector((state) => state.blog);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handelOnCancel = () => {
     dispatch(setIsEditor(true));
@@ -35,11 +43,11 @@ const PublishForm = () => {
 
   const handelBlogTitleChange = (e) => {
     const { value } = e.target;
-    dispatch(setBlog({ ...blog, title: value }));
+    dispatch(setBlog({ ...data, title: value }));
   };
   const handelBlogDescription = (e) => {
     const { value } = e.target;
-    dispatch(setBlog({ ...blog, des: value }));
+    dispatch(setBlog({ ...data, des: value }));
   };
   const handleKey = (e) => {
     // console.log(e);
@@ -49,8 +57,45 @@ const PublishForm = () => {
   };
 
   const handelTags = (e) => {
-    dispatch(setBlog({ ...blog, tags: e }));
+    dispatch(setBlog({ ...data, tags: e }));
     console.log(e);
+  };
+
+  const onPublish = async () => {
+    if (!title.length) return toast.error("Write a title to publish it!");
+
+    if (!des.length) return toast.error("Write a description to publish it!");
+
+    if (!tags.length) return toast.error("Enter atleast 1 tag!");
+
+    let loadingToast = toast.loading("Publishing...");
+
+    setIsLoading(true);
+
+    try {
+      const { data } = await apiCreateBlog({
+        banner,
+        title,
+        des,
+        tags,
+        draft: false,
+        content,
+      });
+      toast.dismiss(loadingToast);
+      toast.success("Published 👍");
+
+      if (data.status) {
+        setTimeout(() => {
+          dispatch(setInitial());
+          dispatch(setIsEditor(true));
+          navigate("/home");
+        }, 800);
+      }
+    } catch ({ response: { data } }) {
+      toast.dismiss(loadingToast);
+      toast.error(data.payload.error);
+    }
+    setIsLoading(false);
   };
   return (
     <div className="w-full">
@@ -106,7 +151,7 @@ const PublishForm = () => {
             value={tags}
             preventSubmit={false}
             onChange={handelTags}
-            maxTags={10}
+            maxTags={tagsLimit}
             onlyUnique={true}
             className="bg-gray-200 rounded items-center pt-1 pl-2  "
             inputProps={{
@@ -119,6 +164,28 @@ const PublishForm = () => {
               classNameRemove: "react-tagsinput-remove",
             }}
           />
+          <div className="w-full text-right">
+            <p>{tagsLimit - tags.length} tags left</p>
+          </div>
+          <StickyFooter
+            className="z-20 cursor-pointer px-4 flex items-center justify-end py-4 bg-transparent w-full"
+            stickyClass="rounded-lg  dark:bg-gray-800"
+          >
+            <div>
+              <Button
+                size="sm"
+                className="ltr:mr-3 rtl:ml-3"
+                onClick={onPublish}
+                // type="submit"
+                color="green-600"
+                variant="solid"
+                loading={isLoading}
+              >
+                {isLoading ? "Publishing..." : "Publish"}
+              </Button>
+            </div>
+          </StickyFooter>
+          <Toaster />
         </div>
       </section>
     </div>

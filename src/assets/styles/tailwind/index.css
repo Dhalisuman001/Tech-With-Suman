@@ -49,7 +49,7 @@
     @apply bg-white rounded inline-block  text-gray-900   font-sans text-sm mt-[5px] mr-[5px] p-[5px];
   }
   .react-tagsinput-tag-custom a::before {
-    @apply content: " ×";
+    @apply content-['_×'];
   }
 }
 

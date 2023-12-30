@@ -3,10 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 export const initialState = {
   banner: "",
   title: "",
-  content: [],
+  content: {},
   tags: [],
   des: "",
   author: { personal_info: {} },
+  draft: false,
 };
 
 export const publishSlice = createSlice({
@@ -14,9 +15,10 @@ export const publishSlice = createSlice({
   initialState,
   reducers: {
     setBlog: (_, action) => action.payload,
+    setInitial: () => initialState,
   },
 });
 
-export const { setBlog } = publishSlice.actions;
+export const { setBlog, setInitial } = publishSlice.actions;
 
 export default publishSlice.reducer;

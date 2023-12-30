@@ -6,39 +6,41 @@ import EditorJS from "@editorjs/editorjs";
 import { tools } from "../Tools";
 import { StickyFooter } from "components/shared";
 import { toast, Toaster } from "react-hot-toast";
-import { setBlog } from "store/blog/publishSlice";
+import { setBlog } from "../../store/dataSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsEditor } from "store/blog/commonSlice";
+import { setIsEditor } from "../../store/stateSlice";
 
 const EditorForm = () => {
   const { cloudinaryUploadImg, uploading } = useImageUpload();
   const {
-    blog,
-    blog: { content, banner, title },
+    data,
+    data: { content, banner, title },
   } = useSelector((state) => state.blog);
 
   const [textEditor, setTextEditor] = useState({ isReady: false });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTextEditor(
-      new EditorJS({
-        /**
-         * Id of Element that should contain Editor instance
-         */
-        holder: "editorjs",
-        data: content,
-        tools,
-        placeholder: "Let's write an awesome strory",
-      })
-    );
+    if (!textEditor.isReady) {
+      setTextEditor(
+        new EditorJS({
+          /**
+           * Id of Element that should contain Editor instance
+           */
+          holder: "editorjs",
+          data: content,
+          tools,
+          placeholder: "Let's write an awesome strory",
+        })
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onFileUpload = async (file) => {
     const img = await cloudinaryUploadImg(file[0]);
 
-    dispatch(setBlog({ ...blog, banner: img }));
+    dispatch(setBlog({ ...data, banner: img }));
   };
 
   const beforeUpload = (files) => {
@@ -66,7 +68,7 @@ const EditorForm = () => {
     const input = e.target;
     input.style.height = "auto";
     input.style.height = input.scrollHeight + "px";
-    dispatch(setBlog({ ...blog, title: input.value }));
+    dispatch(setBlog({ ...data, title: input.value }));
   };
 
   const onPublish = async () => {
@@ -80,7 +82,7 @@ const EditorForm = () => {
         const res = await textEditor.save();
         if (res.blocks.length) {
           console.log(res);
-          dispatch(setBlog({ ...blog, content: res }));
+          dispatch(setBlog({ ...data, content: res }));
           dispatch(setIsEditor(false));
         } else {
           return toast.error("Write something in your blog tio publish it!");

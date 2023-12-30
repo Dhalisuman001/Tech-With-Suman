@@ -1,10 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import publish from "./publishSlice";
-import common from "./commonSlice";
+import data from "./dataSlice";
+import state from "./stateSlice";
 
 const reducer = combineReducers({
-  blog: publish,
-  common,
+  data,
+  state,
 });
 
 export default reducer;
