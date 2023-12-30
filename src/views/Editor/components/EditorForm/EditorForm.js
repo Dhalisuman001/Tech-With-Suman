@@ -15,7 +15,7 @@ import { apiSaveBlog } from "services/BlogService";
 const EditorForm = () => {
   const { cloudinaryUploadImg, uploading } = useImageUpload();
   const {
-    data,
+    data: blog,
     data: { content, banner, title },
   } = useSelector((state) => state.blog);
 
@@ -44,7 +44,7 @@ const EditorForm = () => {
   const onFileUpload = async (file) => {
     const img = await cloudinaryUploadImg(file[0]);
 
-    dispatch(setBlog({ ...data, banner: img }));
+    dispatch(setBlog({ ...blog, banner: img }));
   };
 
   const beforeUpload = (files) => {
@@ -72,7 +72,7 @@ const EditorForm = () => {
     const input = e.target;
     input.style.height = "auto";
     input.style.height = input.scrollHeight + "px";
-    dispatch(setBlog({ ...data, title: input.value }));
+    dispatch(setBlog({ ...blog, title: input.value }));
   };
 
   const onPublish = async () => {
@@ -86,7 +86,7 @@ const EditorForm = () => {
         const res = await textEditor.save();
         if (res.blocks.length) {
           console.log(res);
-          dispatch(setBlog({ ...data, content: res }));
+          dispatch(setBlog({ ...blog, content: res }));
           dispatch(setIsEditor(false));
         } else {
           return toast.error("Write something in your blog tio publish it!");
@@ -97,7 +97,7 @@ const EditorForm = () => {
     }
   };
   const onDraftSave = async () => {
-    // if (!banner.length) return toast.error("Upload a blog banner to save it!");
+    if (!banner.length) return toast.error("Upload a blog banner to save it!");
 
     if (!title.length) return toast.error("Write a title to save it!");
 
@@ -106,11 +106,20 @@ const EditorForm = () => {
     setIsSaving(false);
 
     try {
+      let res;
+      if (textEditor.isReady) {
+        res = await textEditor.save();
+        if (res.blocks.length) {
+          console.log(content);
+          dispatch(setBlog({ ...blog, content: res }));
+        }
+      }
+
       const { data } = await apiSaveBlog({
         banner,
         title,
         draft: true,
-        content,
+        content: res,
       });
       toast.dismiss(loadingToast);
       toast.success("Saved 👍");
