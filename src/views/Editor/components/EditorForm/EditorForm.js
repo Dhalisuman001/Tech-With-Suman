@@ -6,9 +6,11 @@ import EditorJS from "@editorjs/editorjs";
 import { tools } from "../Tools";
 import { StickyFooter } from "components/shared";
 import { toast, Toaster } from "react-hot-toast";
-import { setBlog } from "../../store/dataSlice";
+import { setBlog, setInitial } from "../../store/dataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsEditor } from "../../store/stateSlice";
+import { useNavigate } from "react-router-dom";
+import { apiSaveBlog } from "services/BlogService";
 
 const EditorForm = () => {
   const { cloudinaryUploadImg, uploading } = useImageUpload();
@@ -18,7 +20,9 @@ const EditorForm = () => {
   } = useSelector((state) => state.blog);
 
   const [textEditor, setTextEditor] = useState({ isReady: false });
+  const [isSaving, setIsSaving] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!textEditor.isReady) {
@@ -92,6 +96,37 @@ const EditorForm = () => {
       }
     }
   };
+  const onDraftSave = async () => {
+    // if (!banner.length) return toast.error("Upload a blog banner to save it!");
+
+    if (!title.length) return toast.error("Write a title to save it!");
+
+    let loadingToast = toast.loading("Saving...");
+
+    setIsSaving(false);
+
+    try {
+      const { data } = await apiSaveBlog({
+        banner,
+        title,
+        draft: true,
+        content,
+      });
+      toast.dismiss(loadingToast);
+      toast.success("Saved 👍");
+
+      if (data.status) {
+        setTimeout(() => {
+          dispatch(setInitial());
+          dispatch(setIsEditor(true));
+          navigate("/home");
+        }, 800);
+      }
+    } catch ({ response: { data } }) {
+      toast.dismiss(loadingToast);
+      toast.error(data.payload.error);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-[900px] w-full  flex flex-col items-center">
@@ -142,7 +177,9 @@ const EditorForm = () => {
           >
             Publish
           </Button>
-          <Button size="sm">Draft</Button>
+          <Button size="sm" loading={isSaving} onClick={onDraftSave}>
+            {!isSaving ? "Draft" : "Saving..."}
+          </Button>
         </div>
       </StickyFooter>
       <Toaster />
