@@ -16,13 +16,13 @@ export async function apiSaveBlog(data) {
   });
 }
 
-// export async function apiGooleAuth(data) {
-//   return ApiService.fetchData({
-//     url: "auth/google-auth",
-//     method: "post",
-//     data,
-//   });
-// }
+export async function apiGetLatestBlog(data) {
+  return ApiService.fetchData({
+    url: "blog/latest",
+    method: "get",
+    data,
+  });
+}
 
 // export async function apiForgotPassword(data) {
 //   return ApiService.fetchData({

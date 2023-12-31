@@ -4,6 +4,7 @@ import TabList from "components/ui/Tabs/TabList";
 import TabNav from "components/ui/Tabs/TabNav";
 import React from "react";
 import useResponsive from "utils/hooks/useResponsive";
+import Latest from "./components/Latest";
 
 const Home = () => {
   const { smaller } = useResponsive();
@@ -13,7 +14,9 @@ const Home = () => {
       {!smaller.sm ? (
         <section className="h-cover flex justify-center gap-6">
           {/* Leatest Blog */}
-          <div className="w-full"> Latest</div>
+          <div className="w-full">
+            <Latest />
+          </div>
           {/* Filters and Trending Blog */}
           <div className="w-full">Trending</div>
         </section>
@@ -24,7 +27,9 @@ const Home = () => {
             <TabNav value="trending">Trending</TabNav>
           </TabList>
           <div className="py-6">
-            <TabContent value="home">Latest</TabContent>
+            <TabContent value="home">
+              <Latest />
+            </TabContent>
             <TabContent value="trending">Trending</TabContent>
           </div>
         </Tabs>
