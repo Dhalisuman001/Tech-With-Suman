@@ -6,14 +6,14 @@ import BlogCard from "../BlogCard";
 
 const Latest = () => {
   const {
-    data: { blogs, loading },
+    data: { latestBlogs, loading },
   } = useSelector((state) => state.home);
   return (
     <div>
       {loading ? (
         <Loading />
       ) : (
-        blogs?.payload?.map((blog) => (
+        latestBlogs?.payload?.map((blog) => (
           <div key={blog.blog_id}>
             <BlogCard content={blog} author={blog.author.personal_info} />
           </div>

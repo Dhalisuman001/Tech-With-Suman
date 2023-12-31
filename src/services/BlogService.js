@@ -24,13 +24,13 @@ export async function apiGetLatestBlog(data) {
   });
 }
 
-// export async function apiForgotPassword(data) {
-//   return ApiService.fetchData({
-//     url: "/forgot-password",
-//     method: "post",
-//     data,
-//   });
-// }
+export async function apiGetTrendingBlog(data) {
+  return ApiService.fetchData({
+    url: "blog/trending",
+    method: "get",
+    data,
+  });
+}
 
 // export async function apiResetPassword(data) {
 //   return ApiService.fetchData({

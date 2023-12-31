@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import Header from "components/template/Header";
 import Views from "views";
 import Logo from "assets/img/logo.png";

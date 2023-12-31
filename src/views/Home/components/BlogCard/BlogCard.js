@@ -19,7 +19,7 @@ const BlogCard = ({ content, author }) => {
   return (
     <Link
       to={`/blog/${id}`}
-      className="flex gap-8 items-center border-b border-gray-300 pb-5 mb-4"
+      className="flex gap-8  items-center border-b border-gray-300 pb-5 mb-4"
     >
       <div className="w-full">
         <div className="flex gap-2 items-center mb-3">

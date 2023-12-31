@@ -8,45 +8,84 @@ import Latest from "./components/Latest";
 import { injectReducer } from "store";
 import reducer from "./store";
 import { useDispatch } from "react-redux";
-import { getLeatestBlog } from "./store/dataSlice";
+import { getLeatestBlog, getTrendingBlog } from "./store/dataSlice";
+import Trending from "./components/Trending";
+import { MdOutlineTrendingUp } from "react-icons/md";
 
 injectReducer("home", reducer);
+
+const category = [
+  "programmig",
+  "hollywood",
+  "film making",
+  "tech",
+  "social media",
+  "finances",
+  "cooking",
+  "travel",
+];
 
 const Home = () => {
   const { smaller } = useResponsive();
   const dispatch = useDispatch();
+  // const
 
   useEffect(() => {
     dispatch(getLeatestBlog());
+    dispatch(getTrendingBlog());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // console.log(larger, smaller);
   return (
     <div className="w-full h-full">
-      {!smaller.sm ? (
-        <section className="h-cover flex justify-center gap-6">
-          {/* Leatest Blog */}
-          <div className="w-full">
-            <Latest />
+      <section className="h-cover flex justify-between gap-6">
+        {/* Leatest Blog */}
+        <div>
+          <Tabs defaultValue="home">
+            <TabList>
+              <TabNav value="home">Home</TabNav>
+              <TabNav value="trending">Trending</TabNav>
+            </TabList>
+            <div className="py-6">
+              <TabContent value="home">
+                <Latest />
+              </TabContent>
+              <TabContent value="trending">
+                <Trending />
+              </TabContent>
+            </div>
+          </Tabs>
+        </div>
+        {/* Filters and Trending Blog */}
+        {!smaller.sm && (
+          <div className="min-w-[40%] lg:min-w-[400px] max-w-min border-l border-gray-300 pl-2">
+            <div className="flex flex-col gap-10">
+              <div>
+                <h1 className=" font-medium text-xl mb-8">
+                  Stories from all interests
+                </h1>
+                <div className="flex gap-3 flex-wrap">
+                  {category.map((item, i) => (
+                    <button
+                      key={i}
+                      className="py-2 bg-gray-100 rounded-full px-3 capitalize"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div>
+              <h1 className=" font-medium text-xl mb-8 flex">
+                Trending <MdOutlineTrendingUp />
+              </h1>
+              <Trending />
+            </div>
           </div>
-          {/* Filters and Trending Blog */}
-          {/* <div className="w-full">Trending</div> */}
-        </section>
-      ) : (
-        <Tabs defaultValue="home">
-          <TabList>
-            <TabNav value="home">Home</TabNav>
-            <TabNav value="trending">Trending</TabNav>
-          </TabList>
-          <div className="py-6">
-            <TabContent value="home">
-              <Latest />
-            </TabContent>
-            <TabContent value="trending">Trending</TabContent>
-          </div>
-        </Tabs>
-      )}
+        )}
+      </section>
     </div>
   );
 };
