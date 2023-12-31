@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
-import BlogCard from "../BlogCard";
-import { apiGetLatestBlog } from "services/BlogService";
+import React from "react";
+// import BlogCard from "../BlogCard";
 import { Loading } from "components/shared";
+import { useSelector } from "react-redux";
+import BlogCard from "../BlogCard";
 
 const Latest = () => {
-  const [blog, setBlog] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchBlog = async () => {
-    setIsLoading(true);
-    try {
-      const { data } = await apiGetLatestBlog();
-      setBlog(data.payload);
-    } catch (error) {
-      console.log(error);
-    }
-    setIsLoading(false);
-  };
-  useEffect(() => {
-    fetchBlog();
-  }, []);
-
-  return <div>{isLoading ? <Loading /> : <BlogCard />}</div>;
+  const {
+    data: { blogs, loading },
+  } = useSelector((state) => state.home);
+  return (
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        blogs?.payload?.map((blog) => (
+          <div key={blog.blog_id}>
+            <BlogCard content={blog} author={blog.author.personal_info} />
+          </div>
+        ))
+      )}
+    </div>
+  );
 };
 
 export default Latest;

@@ -2,12 +2,25 @@ import { Tabs } from "components/ui";
 import TabContent from "components/ui/Tabs/TabContent";
 import TabList from "components/ui/Tabs/TabList";
 import TabNav from "components/ui/Tabs/TabNav";
-import React from "react";
+import React, { useEffect } from "react";
 import useResponsive from "utils/hooks/useResponsive";
 import Latest from "./components/Latest";
+import { injectReducer } from "store";
+import reducer from "./store";
+import { useDispatch } from "react-redux";
+import { getLeatestBlog } from "./store/dataSlice";
+
+injectReducer("home", reducer);
 
 const Home = () => {
   const { smaller } = useResponsive();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getLeatestBlog());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // console.log(larger, smaller);
   return (
     <div className="w-full h-full">
@@ -18,7 +31,7 @@ const Home = () => {
             <Latest />
           </div>
           {/* Filters and Trending Blog */}
-          <div className="w-full">Trending</div>
+          {/* <div className="w-full">Trending</div> */}
         </section>
       ) : (
         <Tabs defaultValue="home">
