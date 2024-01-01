@@ -11,19 +11,9 @@ import { useDispatch } from "react-redux";
 import { getLeatestBlog, getTrendingBlog } from "./store/dataSlice";
 import Trending from "./components/Trending";
 import { MdOutlineTrendingUp } from "react-icons/md";
+import Tags from "./components/Tags";
 
 injectReducer("home", reducer);
-
-const category = [
-  "programmig",
-  "hollywood",
-  "film making",
-  "tech",
-  "social media",
-  "finances",
-  "cooking",
-  "travel",
-];
 
 const Home = () => {
   const { smaller } = useResponsive();
@@ -61,21 +51,7 @@ const Home = () => {
         {!smaller.sm && (
           <div className="min-w-[40%] lg:min-w-[400px] max-w-min border-l border-gray-300 pl-2">
             <div className="flex flex-col gap-10">
-              <div>
-                <h1 className=" font-medium text-xl mb-8">
-                  Stories from all interests
-                </h1>
-                <div className="flex gap-3 flex-wrap">
-                  {category.map((item, i) => (
-                    <button
-                      key={i}
-                      className="py-2 bg-gray-100 rounded-full px-3 capitalize"
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <Tags />
             </div>
             <div>
               <h1 className=" font-medium text-xl mb-8 flex">
