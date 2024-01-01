@@ -8,7 +8,7 @@ const stateSlice = createSlice({
     // ticketId: "",
     // board: "",
     // selectedTab: "All",
-    activeTag: "",
+    activeTag: "home",
   },
   reducers: {
     // openDialog: (state) => {
