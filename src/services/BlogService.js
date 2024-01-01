@@ -16,9 +16,9 @@ export async function apiSaveBlog(data) {
   });
 }
 
-export async function apiGetLatestBlog(data) {
+export async function apiGetLatestBlog(data = 1) {
   return ApiService.fetchData({
-    url: "blog/latest",
+    url: `blog/latest?page=${data}`,
     method: "get",
     data,
   });
@@ -35,6 +35,13 @@ export async function apiGetTrendingBlog(data) {
 export async function apiGetFilterBlog(data) {
   return ApiService.fetchData({
     url: `blog/filter-blogs?tag=${data}`,
+    method: "get",
+    data,
+  });
+}
+export async function apiGetBlogCount(data) {
+  return ApiService.fetchData({
+    url: "blog/count-blogs",
     method: "get",
     data,
   });

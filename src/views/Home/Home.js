@@ -8,7 +8,11 @@ import Latest from "./components/Latest";
 import { injectReducer } from "store";
 import reducer from "./store";
 import { useDispatch, useSelector } from "react-redux";
-import { getLeatestBlog, getTrendingBlog } from "./store/dataSlice";
+import {
+  getLeatestBlog,
+  getTrendingBlog,
+  getlatestblogCount,
+} from "./store/dataSlice";
 import Trending from "./components/Trending";
 import { MdOutlineTrendingUp } from "react-icons/md";
 import Tags from "./components/Tags";
@@ -18,10 +22,13 @@ injectReducer("home", reducer);
 const Home = () => {
   const { smaller } = useResponsive();
   const dispatch = useDispatch();
-  const {state:{activeTag}} = useSelector(state=>state.home)
+  const {
+    state: { activeTag },
+  } = useSelector((state) => state.home);
 
   useEffect(() => {
     dispatch(getLeatestBlog());
+    dispatch(getlatestblogCount());
     dispatch(getTrendingBlog());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -31,25 +38,24 @@ const Home = () => {
     <div className="w-full h-full">
       <section className="h-cover flex justify-between gap-6">
         {/* Leatest Blog */}
-        
-          <Tabs defaultValue="home" className='w-full'>
-            <TabList>
-              <TabNav value="home" className="capitalize" >{activeTag}</TabNav>
-              {
-                smaller.sm &&
-              <TabNav value="trending" >Trending</TabNav>
-              }
-            </TabList>
-            <div className="py-6">
-              <TabContent value="home">
-                <Latest />
-              </TabContent>
-              <TabContent value="trending">
-                <Trending />
-              </TabContent>
-            </div>
-          </Tabs>
-        
+
+        <Tabs defaultValue="home" className="w-full">
+          <TabList>
+            <TabNav value="home" className="capitalize">
+              {activeTag}
+            </TabNav>
+            {smaller.sm && <TabNav value="trending">Trending</TabNav>}
+          </TabList>
+          <div className="py-6">
+            <TabContent value="home">
+              <Latest />
+            </TabContent>
+            <TabContent value="trending">
+              <Trending />
+            </TabContent>
+          </div>
+        </Tabs>
+
         {/* Filters and Trending Blog */}
         {!smaller.sm && (
           <div className="min-w-[40%] lg:min-w-[400px] max-w-min border-l border-gray-300 pl-2">
