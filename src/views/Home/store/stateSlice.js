@@ -33,7 +33,6 @@ const stateSlice = createSlice({
     //   state.selectedTab = action.payload;
     // },
     setActiveTag: (state, action) => {
-      console.log(action.payload);
       state.activeTag = action.payload;
     },
   },

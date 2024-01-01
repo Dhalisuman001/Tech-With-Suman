@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { apiGetLatestBlog, apiGetTrendingBlog } from "services/BlogService";
+import {
+  apiGetFilterBlog,
+  apiGetLatestBlog,
+  apiGetTrendingBlog,
+} from "services/BlogService";
 
 export const getLeatestBlog = createAsyncThunk(
   "home/getLeatestBlog",
@@ -15,11 +19,19 @@ export const getTrendingBlog = createAsyncThunk(
     return response.data;
   }
 );
+export const getFilterBlog = createAsyncThunk(
+  "home/getFilterBlog",
+  async (tag) => {
+    const response = await apiGetFilterBlog(tag);
+    return response.data;
+  }
+);
 
 const dataSlice = createSlice({
   name: "home/data",
   initialState: {
     loading: false,
+    isTrendingBlogLoading: false,
     latestBlogs: {},
     trendingBlogs: {},
   },
@@ -33,11 +45,18 @@ const dataSlice = createSlice({
       state.latestBlogs = action.payload;
     });
     builder.addCase(getTrendingBlog.pending, (state, action) => {
-      state.loading = true;
+      state.isTrendingBlogLoading = true;
     });
     builder.addCase(getTrendingBlog.fulfilled, (state, action) => {
-      state.loading = false;
+      state.isTrendingBlogLoading = false;
       state.trendingBlogs = action.payload;
+    });
+    builder.addCase(getFilterBlog.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getFilterBlog.fulfilled, (state, action) => {
+      state.loading = false;
+      state.latestBlogs = action.payload;
     });
   },
 });

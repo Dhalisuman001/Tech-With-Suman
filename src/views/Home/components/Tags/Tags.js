@@ -1,6 +1,7 @@
 import { Tag } from "components/ui";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getFilterBlog, getLeatestBlog } from "views/Home/store/dataSlice";
 import { setActiveTag } from "views/Home/store/stateSlice";
 
 const category = [
@@ -24,8 +25,10 @@ const Tags = () => {
 
     if (tag === activeTag) {
       dispatch(setActiveTag(""));
+      dispatch(getLeatestBlog());
     } else {
       dispatch(setActiveTag(tag));
+      dispatch(getFilterBlog(tag));
     }
   };
   return (

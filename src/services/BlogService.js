@@ -32,10 +32,10 @@ export async function apiGetTrendingBlog(data) {
   });
 }
 
-// export async function apiResetPassword(data) {
-//   return ApiService.fetchData({
-//     url: "/reset-password",
-//     method: "post",
-//     data,
-//   });
-// }
+export async function apiGetFilterBlog(data) {
+  return ApiService.fetchData({
+    url: `blog/filter-blogs?tag=${data}`,
+    method: "get",
+    data,
+  });
+}

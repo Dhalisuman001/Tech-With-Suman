@@ -5,7 +5,7 @@ import MiniBlogCard from "../MiniBlogCard";
 
 const Trending = () => {
   const {
-    data: { trendingBlogs, loading },
+    data: { trendingBlogs, isTrendingBlogLoading: loading },
   } = useSelector((state) => state.home);
   return (
     <div>
