@@ -28,7 +28,7 @@ const BlogCard = ({ content, author }) => {
             alt="profile"
             className="w-6 h-6 rounded-full"
           />
-          <p className="line-clamp-1">
+          <p className="line-clamp-1 hover:underline capitalize">
             {fullname} @{username}
           </p>
 
@@ -36,7 +36,7 @@ const BlogCard = ({ content, author }) => {
             {publishedAt}
           </Moment>
         </div>
-        <h1 className="text-2xl font-medium leading-7  line-clamp-3 sm:line-clamp-2">
+        <h1 className="text-2xl font-medium leading-7  line-clamp-3 sm:line-clamp-2 capitalize">
           {title}
         </h1>
 
@@ -46,7 +46,7 @@ const BlogCard = ({ content, author }) => {
           </p>
         )}
         <div className="flex gap-4 mt-2">
-          <span className="py-1 px-2 bg-gray-100 text-gray-800  rounded-md">
+          <span className="py-1 px-2 bg-gray-100 text-gray-800  rounded-md capitalize">
             {tags[0]}
           </span>
           <span className="ml-3 flex items-center gap-2 text-gray-800">

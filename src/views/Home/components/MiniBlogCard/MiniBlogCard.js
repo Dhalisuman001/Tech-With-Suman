@@ -17,7 +17,7 @@ const MiniBlogCard = ({ content, author, i }) => {
             alt="profile"
             className="w-6 h-6 rounded-full"
           />
-          <p className="line-clamp-1">
+          <p className="line-clamp-1 hover:underline capitalize">
             {fullname} @{username}
           </p>
 
@@ -25,7 +25,7 @@ const MiniBlogCard = ({ content, author, i }) => {
             {publishedAt}
           </Moment>
         </div>
-        <h1 className="text-2xl font-medium leading-7  line-clamp-3 sm:line-clamp-2">
+        <h1 className="text-2xl font-medium leading-7  line-clamp-3 sm:line-clamp-2 capitalize">
           {title}
         </h1>
       </div>
