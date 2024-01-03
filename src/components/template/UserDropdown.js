@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Avatar, Dropdown } from "components/ui";
 import withHeaderItem from "utils/hoc/withHeaderItem";
 import useAuth from "utils/hooks/useAuth";
@@ -11,33 +11,36 @@ import { BsFillMenuButtonWideFill, BsPencilSquare } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
 import { AiOutlineSetting } from "react-icons/ai";
 
-const dropdownItemList = [
-  {
-    label: "Write",
-    path: "/blog-editor",
-    icon: <BsPencilSquare />,
-  },
-  {
-    label: "Profile",
-    path: "/home",
-    icon: <FaRegUserCircle />,
-  },
-  {
-    label: "Dashboard",
-    path: "/home",
-    icon: <BsFillMenuButtonWideFill />,
-  },
-  {
-    label: "Settings",
-    path: "/home",
-    icon: <AiOutlineSetting />,
-  },
-];
-
 export const UserDropdown = ({ className }) => {
   // bind this
   const { fullname, profile_img, username } = useSelector(
     (state) => state.auth.user
+  );
+
+  const dropdownItemList = useMemo(
+    () => [
+      {
+        label: "Write",
+        path: "/blog-editor",
+        icon: <BsPencilSquare />,
+      },
+      {
+        label: "Profile",
+        path: `/user/${username}`,
+        icon: <FaRegUserCircle />,
+      },
+      {
+        label: "Dashboard",
+        path: "/home",
+        icon: <BsFillMenuButtonWideFill />,
+      },
+      {
+        label: "Settings",
+        path: "/home",
+        icon: <AiOutlineSetting />,
+      },
+    ],
+    [username]
   );
 
   const { signOut } = useAuth();

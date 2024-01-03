@@ -6,6 +6,12 @@ export async function apiGetUserProfile(data) {
     method: "get",
   });
 }
+export async function apiGetUserBlog(data) {
+  return ApiService.fetchData({
+    url: `/user/blog?user_id=${data}`,
+    method: "get",
+  });
+}
 
 // export async function apiGetNotificationList() {
 //   return ApiService.fetchData({
