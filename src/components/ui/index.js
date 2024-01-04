@@ -42,3 +42,4 @@ export {
 } from "./ConfigProvider";
 export { default as hooks } from "./hooks";
 export { default as NoDataMessage } from "./NoDataMessage";
+export { default as Animation } from "./Animation";
