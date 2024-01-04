@@ -46,3 +46,10 @@ export async function apiGetBlogCount(data) {
     data,
   });
 }
+export async function apiGetBlogDetails(data) {
+  return ApiService.fetchData({
+    url: `blog/get-blog/${data}`,
+    method: "get",
+    data,
+  });
+}

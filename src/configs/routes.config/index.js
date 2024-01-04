@@ -22,4 +22,10 @@ export const protectedRoutes = [
     component: React.lazy(() => import("views/Profile")),
     authority: [],
   },
+  {
+    key: "blog",
+    path: "blog/:blog_id",
+    component: React.lazy(() => import("views/Blog")),
+    authority: [],
+  },
 ];
