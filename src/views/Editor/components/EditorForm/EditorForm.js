@@ -17,7 +17,7 @@ const EditorForm = () => {
   const {
     data: blog,
     data: { content, banner, title },
-  } = useSelector((state) => state.blog);
+  } = useSelector((state) => state.editor);
 
   const [textEditor, setTextEditor] = useState({ isReady: false });
   const [isSaving, setIsSaving] = useState(false);

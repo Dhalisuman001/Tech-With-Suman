@@ -5,7 +5,7 @@ export const initialState = {
 };
 
 export const commonSlice = createSlice({
-  name: "blog/common",
+  name: "editor/common",
   initialState,
   reducers: {
     setIsEditor: (state, action) => {

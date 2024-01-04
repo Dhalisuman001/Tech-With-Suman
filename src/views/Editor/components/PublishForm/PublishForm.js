@@ -33,7 +33,7 @@ const PublishForm = () => {
   const {
     data,
     data: { banner, title, des, tags, content },
-  } = useSelector((state) => state.blog);
+  } = useSelector((state) => state.editor);
 
   const [isLoading, setIsLoading] = useState(false);
 

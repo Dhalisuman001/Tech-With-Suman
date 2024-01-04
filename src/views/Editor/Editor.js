@@ -5,7 +5,7 @@ import EditorForm from "./components/EditorForm";
 import { injectReducer } from "store";
 import reducer from "./store";
 
-injectReducer("blog", reducer);
+injectReducer("editor", reducer);
 const Editor = () => {
   const {
     state: { isEditor },

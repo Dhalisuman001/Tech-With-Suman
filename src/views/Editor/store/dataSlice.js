@@ -11,7 +11,7 @@ export const initialState = {
 };
 
 export const publishSlice = createSlice({
-  name: "blog/action",
+  name: "editor/action",
   initialState,
   reducers: {
     setBlog: (_, action) => action.payload,
