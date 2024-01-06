@@ -9,7 +9,7 @@ injectReducer("editor", reducer);
 const Editor = () => {
   const {
     state: { isEditor },
-  } = useSelector((state) => state.blog);
+  } = useSelector((state) => state.editor);
 
   return <div>{isEditor ? <EditorForm /> : <PublishForm />}</div>;
 };

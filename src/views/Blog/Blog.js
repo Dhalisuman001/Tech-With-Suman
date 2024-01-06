@@ -8,7 +8,8 @@ import { ImSpinner9 } from "react-icons/im";
 import { Avatar, Spinner } from "components/ui";
 import Moment from "react-moment";
 import BlogInteraction from "./components/BlogInteraction";
-import SimilarBlog from "./components/SimilarBlog";
+import Content from "./components/Content";
+// import SimilarBlog from "./components/SimilarBlog";
 
 injectReducer("blog", reducer);
 
@@ -18,7 +19,7 @@ const Blog = () => {
   const {
     data: { blog, loading },
   } = useSelector((state) => state.blog);
-  console.log(blog);
+  // console.log(blog);
 
   useEffect(() => {
     dispatch(fetchBlogDetails(blog_id));
@@ -66,6 +67,9 @@ const Blog = () => {
             </div>
           </div>
 
+          <BlogInteraction />
+
+          <Content content={blog?.content?.blocks} />
           <BlogInteraction />
           {/* Don't forget to enable similar blog functionlities later */}
           {/* {blog?.tags?.length > 0 && <SimilarBlog tag={blog?.tags[0]} />} */}
