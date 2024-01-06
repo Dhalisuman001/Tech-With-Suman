@@ -30,7 +30,7 @@ const BlogInteraction = () => {
         <div className="flex gap-6 items-center">
           {username === blog?.author?.personal_info?.username && (
             <Link
-              to={`blog-edit/${blog?.blog_id}`}
+              to={`/blog-editor/${blog?.blog_id}`}
               className="hover:bg-gray-50 p-2 flex text-center justify-center rounded-full"
             >
               <FiEdit size={15} className="hover:text-purple-600 " />

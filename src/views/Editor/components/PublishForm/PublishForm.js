@@ -8,7 +8,7 @@ import TagsInput from "react-tagsinput";
 import "react-tagsinput/react-tagsinput.css";
 import { StickyFooter } from "components/shared";
 import { toast, Toaster } from "react-hot-toast";
-import { apiCreateBlog } from "services/BlogService";
+import { apiCreateBlog, apiUpdateBlog } from "services/BlogService";
 import { useNavigate } from "react-router-dom";
 
 const characterLimit = 200;
@@ -32,7 +32,7 @@ const PublishForm = () => {
   const navigate = useNavigate();
   const {
     data,
-    data: { banner, title, des, tags, content },
+    data: { banner, title, des, tags, content, blog_id },
   } = useSelector((state) => state.editor);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +83,43 @@ const PublishForm = () => {
       });
       toast.dismiss(loadingToast);
       toast.success("Published 👍");
+
+      if (data.status) {
+        setTimeout(() => {
+          dispatch(setInitial());
+          dispatch(setIsEditor(true));
+          navigate("/home");
+        }, 800);
+      }
+    } catch ({ response: { data } }) {
+      toast.dismiss(loadingToast);
+      toast.error(data.payload.error);
+    }
+    setIsLoading(false);
+  };
+  const onUpdate = async () => {
+    if (!title.length) return toast.error("Write a title to update it!");
+
+    if (!des.length) return toast.error("Write a description to update it!");
+
+    if (!tags.length) return toast.error("Enter atleast 1 tag!");
+
+    let loadingToast = toast.loading("Updatiing...");
+
+    setIsLoading(true);
+
+    try {
+      const { data } = await apiUpdateBlog({
+        banner,
+        title,
+        des,
+        tags,
+        draft: false,
+        content,
+        blog_id,
+      });
+      toast.dismiss(loadingToast);
+      toast.success("Updated 👍");
 
       if (data.status) {
         setTimeout(() => {
@@ -172,17 +209,31 @@ const PublishForm = () => {
             stickyClass="rounded-lg  dark:bg-gray-800"
           >
             <div>
-              <Button
-                size="sm"
-                className="ltr:mr-3 rtl:ml-3"
-                onClick={onPublish}
-                // type="submit"
-                color="green-600"
-                variant="solid"
-                loading={isLoading}
-              >
-                {isLoading ? "Publishing..." : "Publish"}
-              </Button>
+              {blog_id ? (
+                <Button
+                  size="sm"
+                  className="ltr:mr-3 rtl:ml-3"
+                  onClick={onUpdate}
+                  // type="submit"
+                  color="green-600"
+                  variant="solid"
+                  loading={isLoading}
+                >
+                  {isLoading ? "Updateing..." : "Update"}
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  className="ltr:mr-3 rtl:ml-3"
+                  onClick={onPublish}
+                  // type="submit"
+                  color="green-600"
+                  variant="solid"
+                  loading={isLoading}
+                >
+                  {isLoading ? "Publishing..." : "Publish"}
+                </Button>
+              )}
             </div>
           </StickyFooter>
           <Toaster />

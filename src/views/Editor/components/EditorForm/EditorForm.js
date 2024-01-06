@@ -16,7 +16,7 @@ const EditorForm = () => {
   const { cloudinaryUploadImg, uploading } = useImageUpload();
   const {
     data: blog,
-    data: { content, banner, title },
+    data: { content, banner, title, blog_id },
   } = useSelector((state) => state.editor);
 
   const [textEditor, setTextEditor] = useState({ isReady: false });
@@ -32,7 +32,7 @@ const EditorForm = () => {
            * Id of Element that should contain Editor instance
            */
           holder: "editorjs",
-          data: content,
+          data: Array.isArray(content) ? content[0] : content,
           tools,
           placeholder: "Let's write an awesome strory",
         })
@@ -176,19 +176,34 @@ const EditorForm = () => {
         stickyClass="rounded-lg bg-white dark:bg-gray-800"
       >
         <div>
-          <Button
-            size="sm"
-            className="ltr:mr-3 rtl:ml-3"
-            onClick={onPublish}
-            // type="submit"
-            color="green-600"
-            variant="solid"
-          >
-            Publish
-          </Button>
-          <Button size="sm" loading={isSaving} onClick={onDraftSave}>
-            {!isSaving ? "Draft" : "Saving..."}
-          </Button>
+          {blog_id ? (
+            <Button
+              size="sm"
+              className="ltr:mr-3 rtl:ml-3"
+              onClick={onPublish}
+              // type="submit"
+              color="green-600"
+              variant="solid"
+            >
+              Update
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              className="ltr:mr-3 rtl:ml-3"
+              onClick={onPublish}
+              // type="submit"
+              color="green-600"
+              variant="solid"
+            >
+              Publish
+            </Button>
+          )}
+          {!blog_id && (
+            <Button size="sm" loading={isSaving} onClick={onDraftSave}>
+              {!isSaving ? "Draft" : "Saving..."}
+            </Button>
+          )}
         </div>
       </StickyFooter>
       <Toaster />

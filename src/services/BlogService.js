@@ -7,6 +7,13 @@ export async function apiCreateBlog(data) {
     data,
   });
 }
+export async function apiUpdateBlog(data) {
+  return ApiService.fetchData({
+    url: "/blog/update",
+    method: "put",
+    data,
+  });
+}
 
 export async function apiSaveBlog(data) {
   return ApiService.fetchData({

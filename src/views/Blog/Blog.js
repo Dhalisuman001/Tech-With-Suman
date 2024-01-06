@@ -70,6 +70,7 @@ const Blog = () => {
           <BlogInteraction />
 
           <Content content={blog?.content?.blocks} />
+
           <BlogInteraction />
           {/* Don't forget to enable similar blog functionlities later */}
           {/* {blog?.tags?.length > 0 && <SimilarBlog tag={blog?.tags[0]} />} */}
