@@ -1,10 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { apiGetBlogDetails } from "services/BlogService";
+import { apiGetBlogDetails, apiGetFilterBlog } from "services/BlogService";
 
 export const fetchBlogDetails = createAsyncThunk(
-  "home/fetchBlogDetails",
+  "blog/fetchBlogDetails",
   async (blog_id) => {
     const response = await apiGetBlogDetails(blog_id);
+    return response.data;
+  }
+);
+
+export const getSimilarBlog = createAsyncThunk(
+  "blog/getSimilarBlog",
+  async (blog_id) => {
+    const response = await apiGetFilterBlog(blog_id);
+    // console.log(/response.data);
     return response.data;
   }
 );
@@ -14,6 +23,8 @@ const dataSlice = createSlice({
   initialState: {
     loading: false,
     blog: {},
+    similarLoading: false,
+    similarBlog: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -23,6 +34,14 @@ const dataSlice = createSlice({
     builder.addCase(fetchBlogDetails.fulfilled, (state, action) => {
       state.blog = action.payload.payload;
       state.loading = false;
+    });
+    builder.addCase(getSimilarBlog.pending, (state, action) => {
+      state.similarLoading = true;
+    });
+    builder.addCase(getSimilarBlog.fulfilled, (state, action) => {
+      // console.log(action);
+      state.similarBlog = action.payload.payload;
+      state.similarLoading = false;
     });
   },
 });

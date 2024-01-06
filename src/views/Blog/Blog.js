@@ -8,6 +8,7 @@ import { ImSpinner9 } from "react-icons/im";
 import { Avatar, Spinner } from "components/ui";
 import Moment from "react-moment";
 import BlogInteraction from "./components/BlogInteraction";
+import SimilarBlog from "./components/SimilarBlog";
 
 injectReducer("blog", reducer);
 
@@ -66,6 +67,8 @@ const Blog = () => {
           </div>
 
           <BlogInteraction />
+          {/* Don't forget to enable similar blog functionlities later */}
+          {/* {blog?.tags?.length > 0 && <SimilarBlog tag={blog?.tags[0]} />} */}
         </div>
       )}
     </>
