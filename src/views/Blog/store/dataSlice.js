@@ -5,6 +5,7 @@ import {
   apiGetFilterBlog,
   apiPutBlogLikes,
 } from "services/BlogService";
+import { apiCreateComment, apiGetComments } from "services/CommentService";
 
 export const fetchBlogDetails = createAsyncThunk(
   "blog/fetchBlogDetails",
@@ -38,6 +39,14 @@ export const postBlogLikes = createAsyncThunk(
     return response.data;
   }
 );
+export const fetchComments = createAsyncThunk(
+  "blog/fetchComments",
+  async (blog_id) => {
+    const response = await apiGetComments(blog_id);
+    // console.log(/response.data);
+    return response.data;
+  }
+);
 
 const dataSlice = createSlice({
   name: "blog/data",
@@ -49,6 +58,8 @@ const dataSlice = createSlice({
     like: {
       isliked: false,
     },
+    comments: [],
+    commentLoading: false,
   },
   reducers: {
     setBlog: (state, action) => {
@@ -90,6 +101,14 @@ const dataSlice = createSlice({
       // console.log(action);
       state.like = action.payload.payload;
       // state.similarLoading = false;
+    });
+    builder.addCase(fetchComments.pending, (state, action) => {
+      state.commentLoading = true;
+    });
+    builder.addCase(fetchComments.fulfilled, (state, action) => {
+      // console.log(action);
+      state.comments = action.payload.payload;
+      state.commentLoading = false;
     });
   },
 });

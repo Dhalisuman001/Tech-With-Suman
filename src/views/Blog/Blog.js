@@ -3,7 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import { injectReducer } from "store";
 import reducer from "./store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogDetails, getBlogLike } from "./store/dataSlice";
+import {
+  fetchBlogDetails,
+  // fetchComments,
+  getBlogLike,
+} from "./store/dataSlice";
 import { ImSpinner9 } from "react-icons/im";
 import { Avatar, GoToSignIn, Spinner } from "components/ui";
 import Moment from "react-moment";
@@ -25,8 +29,9 @@ const Blog = () => {
 
   useEffect(() => {
     dispatch(fetchBlogDetails(blog_id));
+    // dispatch(fetchComments(blog?._id));
     if (signedIn) {
-      console.log("Calling");
+      // console.log("Calling");
       dispatch(getBlogLike(blog_id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
