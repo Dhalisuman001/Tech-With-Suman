@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { apiGetBlogDetails, apiGetFilterBlog } from "services/BlogService";
+import {
+  apiGetBlogDetails,
+  apiGetBlogLikes,
+  apiGetFilterBlog,
+  apiPutBlogLikes,
+} from "services/BlogService";
 
 export const fetchBlogDetails = createAsyncThunk(
   "blog/fetchBlogDetails",
@@ -17,6 +22,22 @@ export const getSimilarBlog = createAsyncThunk(
     return response.data;
   }
 );
+export const getBlogLike = createAsyncThunk(
+  "blog/getBlogLikes",
+  async (blog_id) => {
+    const response = await apiGetBlogLikes(blog_id);
+    // console.log(/response.data);
+    return response.data;
+  }
+);
+export const postBlogLikes = createAsyncThunk(
+  "blog/postBlogLikes",
+  async (blog_id) => {
+    const response = await apiPutBlogLikes(blog_id);
+    // console.log(/response.data);
+    return response.data;
+  }
+);
 
 const dataSlice = createSlice({
   name: "blog/data",
@@ -25,8 +46,15 @@ const dataSlice = createSlice({
     blog: {},
     similarLoading: false,
     similarBlog: [],
+    like: {
+      isliked: false,
+    },
   },
-  reducers: {},
+  reducers: {
+    setBlog: (state, action) => {
+      state.blog = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchBlogDetails.pending, (state, action) => {
       state.loading = true;
@@ -43,9 +71,29 @@ const dataSlice = createSlice({
       state.similarBlog = action.payload.payload;
       state.similarLoading = false;
     });
+    builder.addCase(getBlogLike.pending, (state, action) => {
+      // console.log(action);
+      // state.like = action.payload.payload;
+      // state.similarLoading = false;
+    });
+    builder.addCase(getBlogLike.fulfilled, (state, action) => {
+      // console.log(action);
+      state.like = action.payload.payload;
+      // state.similarLoading = false;
+    });
+    builder.addCase(postBlogLikes.pending, (state, action) => {
+      // console.log(action);
+      // state.like = action.payload.payload;
+      // state.similarLoading = false;
+    });
+    builder.addCase(postBlogLikes.fulfilled, (state, action) => {
+      // console.log(action);
+      state.like = action.payload.payload;
+      // state.similarLoading = false;
+    });
   },
 });
 
-// export const { setPage } = dataSlice.actions;
+export const { setBlog } = dataSlice.actions;
 
 export default dataSlice.reducer;

@@ -1,25 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const stateSlice = createSlice({
-  name: "home/state",
+  name: "blog/state",
   initialState: {
-    // dialogOpen: false,
-    // dialogView: "",
-    // ticketId: "",
-    // board: "",
-    // selectedTab: "All",
+    dialogOpen: false,
+    // isLike: false,
     username: "",
   },
   reducers: {
-    // openDialog: (state) => {
-    //   state.dialogOpen = true;
-    // },
-    // closeDialog: (state) => {
-    //   state.dialogOpen = false;
-    //   state.ticketId = "";
-    //   state.board = "";
-    //   state.dialogView = "";
-    // },
+    openDialog: (state) => {
+      state.dialogOpen = true;
+    },
+    closeDialog: (state) => {
+      state.dialogOpen = false;
+    },
     // updateDialogView: (state, action) => {
     //   state.dialogView = action.payload;
     // },
@@ -29,23 +23,24 @@ const stateSlice = createSlice({
     // setSelectedBoard: (state, action) => {
     //   state.board = action.payload;
     // },
-    // setSelectedTab: (state, action) => {
-    //   state.selectedTab = action.payload;
+    // setIsLike: (state, action) => {
+    //   state.isLike = action.payload;
     // },
-    setUsername: (state, action) => {
-      state.activeTag = action.payload;
-    },
+    // setUsername: (state, action) => {
+    //   state.activeTag = action.payload;
+    // },
   },
 });
 
 export const {
-  // openDialog,
+  openDialog,
   // updateDialogView,
-  // closeDialog,
+  closeDialog,
   // setSelectedTicketId,
   // setSelectedBoard,
   // setSelectedTab,
   setUsername,
+  // setIsLike,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

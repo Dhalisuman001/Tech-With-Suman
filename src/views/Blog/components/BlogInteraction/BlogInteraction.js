@@ -1,25 +1,50 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaRegHeart, FaRegCommentDots, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
+import { openDialog } from "../../store/stateSlice";
+import { FaHeart } from "react-icons/fa";
+import { postBlogLikes } from "views/Blog/store/dataSlice";
+
+// import { openDialog } from "store/auth/sessionSlice";
 
 const BlogInteraction = () => {
+  const dispatch = useDispatch();
+
   const {
-    data: { blog },
+    data: { blog, like },
+    // state: { isLike },
   } = useSelector((state) => state.blog);
   const {
     user: { username },
+    session: { signedIn },
   } = useSelector((state) => state.auth);
+  // const [likesCount, setIsLikeCount] = useState(blog.activity?.total_likes);
+
+  const handelLike = () => {
+    if (signedIn) {
+      dispatch(postBlogLikes(blog.blog_id));
+    } else {
+      dispatch(openDialog());
+    }
+  };
   return (
     <>
       <hr className="text-gray-100 " />
       <div className="my-2 flex justify-between">
         <div className="flex gap-3 items-center">
-          <button className=" p-2 rounded-full items-center justify-center bg-gray-50">
-            <FaRegHeart size={15} />
+          <button
+            onClick={handelLike}
+            className=" p-2 rounded-full items-center justify-center bg-gray-50"
+          >
+            {like?.isLiked ? (
+              <FaHeart size={15} color="red" />
+            ) : (
+              <FaRegHeart size={15} />
+            )}
           </button>
-          <p>{blog.activity?.total_likes}</p>
+          <p>{!signedIn ? blog.activity?.total_likes : like?.total_likes}</p>
 
           <button className=" p-2 rounded-full items-center justify-center bg-gray-50">
             <FaRegCommentDots size={15} />

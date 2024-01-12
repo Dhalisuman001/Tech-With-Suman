@@ -60,3 +60,17 @@ export async function apiGetBlogDetails(data) {
     data,
   });
 }
+export async function apiGetBlogLikes(data) {
+  return ApiService.fetchData({
+    url: `blog/like-blog/${data}`,
+    method: "get",
+    data,
+  });
+}
+export async function apiPutBlogLikes(data) {
+  return ApiService.fetchData({
+    url: `blog/like-blog/${data}`,
+    method: "put",
+    data,
+  });
+}

@@ -3,9 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { injectReducer } from "store";
 import reducer from "./store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogDetails } from "./store/dataSlice";
+import { fetchBlogDetails, getBlogLike } from "./store/dataSlice";
 import { ImSpinner9 } from "react-icons/im";
-import { Avatar, Spinner } from "components/ui";
+import { Avatar, GoToSignIn, Spinner } from "components/ui";
 import Moment from "react-moment";
 import BlogInteraction from "./components/BlogInteraction";
 import Content from "./components/Content";
@@ -19,10 +19,15 @@ const Blog = () => {
   const {
     data: { blog, loading },
   } = useSelector((state) => state.blog);
+  const { signedIn } = useSelector((state) => state.auth.session);
   // console.log(blog);
 
   useEffect(() => {
     dispatch(fetchBlogDetails(blog_id));
+    if (signedIn) {
+      console.log("Calling");
+      dispatch(getBlogLike(blog_id));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blog_id]);
 
@@ -74,6 +79,8 @@ const Blog = () => {
           <BlogInteraction />
           {/* Don't forget to enable similar blog functionlities later */}
           {/* {blog?.tags?.length > 0 && <SimilarBlog tag={blog?.tags[0]} />} */}
+
+          <GoToSignIn />
         </div>
       )}
     </>

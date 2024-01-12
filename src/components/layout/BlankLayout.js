@@ -6,6 +6,7 @@ import UserDropdown from "components/template/UserDropdown";
 import Search from "components/template/Search";
 import Notification from "components/template/Notification";
 import { useSelector } from "react-redux";
+// import { GoToSignIn } from "components/ui";
 const HeaderActionsStart = () => {
   return (
     <>
@@ -42,6 +43,7 @@ const BlankLayout = (props) => {
 
   return (
     <div className="app-layout-blank flex flex-auto flex-col h-[100vh]">
+      {/* <GoToSignIn /> */}
       <Header
         className="shadow"
         headerStart={<HeaderActionsStart />}
