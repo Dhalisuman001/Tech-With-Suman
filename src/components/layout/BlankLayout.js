@@ -6,6 +6,7 @@ import UserDropdown from "components/template/UserDropdown";
 import Search from "components/template/Search";
 import Notification from "components/template/Notification";
 import { useSelector } from "react-redux";
+// import Footer from "components/template/Footer";
 // import { GoToSignIn } from "components/ui";
 const HeaderActionsStart = () => {
   return (
@@ -50,6 +51,7 @@ const BlankLayout = (props) => {
         headerEnd={HeaderEnd}
       />
       <Views {...props} />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { Avatar, GoToSignIn, Spinner } from "components/ui";
 import Moment from "react-moment";
 import BlogInteraction from "./components/BlogInteraction";
 import Content from "./components/Content";
+import Comment from "./components/Comment";
 // import SimilarBlog from "./components/SimilarBlog";
 
 injectReducer("blog", reducer);
@@ -79,6 +80,7 @@ const Blog = () => {
           <BlogInteraction />
           {/* Don't forget to enable similar blog functionlities later */}
           {/* {blog?.tags?.length > 0 && <SimilarBlog tag={blog?.tags[0]} />} */}
+          <Comment />
 
           <GoToSignIn />
         </div>
