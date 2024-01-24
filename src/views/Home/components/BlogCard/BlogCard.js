@@ -3,6 +3,7 @@ import Moment from "react-moment";
 import useResponsive from "utils/hooks/useResponsive";
 import { FaRegHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { TextEllipsis } from "components/shared";
 const BlogCard = ({ content, author }) => {
   const {
     title,
@@ -40,9 +41,10 @@ const BlogCard = ({ content, author }) => {
             {publishedAt}
           </Moment>
         </div>
-        <h1 className="text-2xl font-medium leading-7  line-clamp-3 sm:line-clamp-2 capitalize">
+        <TextEllipsis text={title} className="font-bold" maxTextCount={40} />
+        {/* <h1 className="text-2xl font-medium leading-7  line-clamp-3 sm:line-clamp-2 capitalize">
           {title}
-        </h1>
+        </h1> */}
 
         {windowWidth >= 1100 && (
           <p className="my-2 text-sm font-sans leading-7 text-gray-800  line-clamp-2">

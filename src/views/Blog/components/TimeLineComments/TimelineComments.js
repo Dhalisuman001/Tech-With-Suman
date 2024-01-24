@@ -1,20 +1,19 @@
 import {
-  // Card,
+  Button,
+  Card,
+  Input,
   NoDataMessage,
   Skeleton,
-  // Spinner,
   Timeline,
 } from "components/ui";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import TimelineAvatar from "../TimelineAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchComments } from "views/Blog/store/dataSlice";
 import Moment from "react-moment";
-import { IconText } from "components/shared";
-// import { HiClock } from "react-icons/hi";
-import { AiFillDelete } from "react-icons/ai";
-import { FaEdit, FaReply } from "react-icons/fa";
-// import isLastChild from "utils/isLastChild";
+
+import isLastChild from "utils/isLastChild";
+import { apiCreateComment } from "services/CommentService";
 
 // const activity = [
 //   {
@@ -76,7 +75,7 @@ const CustomSpinner = ({ item = [0, 1, 2, 3, 4] }) => {
 const TimelineComments = () => {
   const dispatch = useDispatch();
   const {
-    blog: { _id },
+    blog: { _id, author },
     comments,
     commentLoading,
   } = useSelector((state) => state.blog.data);
@@ -91,9 +90,35 @@ const TimelineComments = () => {
   }, [_id]);
 
   const CommentItem = ({ timeline, ...rest }) => {
+    const [isSow, setIsShow] = useState(false);
+    const [loading, setIsLoading] = useState(false);
+    const replyRef = useRef();
+
+    const onRespond = async () => {
+      setIsLoading(true);
+      const value = replyRef.current.value;
+      try {
+        const { data } = await apiCreateComment({
+          comment: value,
+          replying_to: timeline._id,
+          blog_author: author._id,
+          blog_id: _id,
+        });
+        console.log(data);
+        setIsLoading(false);
+        setIsShow(false);
+      } catch (error) {
+        console.log(error);
+      }
+      // setTimeout(() => {
+      //   console.log(value);
+      //   setIsLoading(false);
+      //   setIsShow(false);
+      // }, 3000);
+    };
     return (
       <Timeline.Item
-        className="w-full"
+        className="w-full mt-1"
         media={
           <TimelineAvatar
             src={timeline?.commented_by?.personal_info?.profile_img}
@@ -105,43 +130,57 @@ const TimelineComments = () => {
           <span className="font-semibold text-gray-900 dark:text-gray-100 capitalize">
             {timeline.commented_by?.personal_info?.fullname}
           </span>
-          <span className="mx-2">commented </span>
-          <Moment fromNow ago>
-            {timeline.commentedAt}
-          </Moment>
-          &nbsp;ago
+          <span className="mx-2">
+            {" "}
+            <Moment fromNow ago>
+              {timeline.commentedAt}
+            </Moment>
+            &nbsp;ago{" "}
+          </span>
         </p>
         <div
           // bordered
-          className="mt-1 px-4 py-2 bg-gray-50 border-[1px] border-gray-300 rounded-xl "
+          className="mt-1 px-2 py-2 bg-gray-50 border-[1px] border-gray-100 rounded-xl "
         >
           <p>{timeline.comment}</p>
-          <div className="flex flex-row justify-end gap-4 mt-2">
-            {username === timeline.commented_by?.personal_info?.username && (
-              <IconText
-                className="text-emerald-500 text-sm "
-                icon={<FaEdit className="text-sm" />}
-              >
-                Edit
-              </IconText>
+          <div className="flex flex-row justify-end gap-4 mt-1">
+            {/* {use'rname === timeline.commented_by?.personal_info?.username && (
+              <p className=" text-sm   cursor-pointer">Edit</p>
             )}
             {username === timeline.commented_by?.personal_info?.username && (
-              <IconText
-                className=" text-red-500 text-sm "
-                icon={<AiFillDelete className="text-sm" />}
-              >
-                Delete
-              </IconText>
-            )}
+              <p className="  text-sm  cursor-pointer">Delete</p>
+            )}' */}
 
-            <IconText
-              className=" text-blue-500 text-sm "
-              icon={<FaReply className=" text-sm" />}
+            <button
+              className="  text-sm   cursor-pointer hover:text-blue-600 hover:underline"
+              onClick={() => setIsShow(true)}
             >
               Reply
-            </IconText>
+            </button>
           </div>
         </div>
+        {isSow && (
+          <Card bordered={false} className="mt-2">
+            <Input
+              disabled={loading}
+              ref={replyRef}
+              // defaultValue={`@${timeline.commented_by?.personal_info?.username}`}
+              placeholder={`Reply to ${timeline.commented_by?.personal_info?.fullname}`}
+              textArea
+              className="bg-gray-50"
+            />
+            <div className="flex justify-end ">
+              <Button onClick={() => setIsShow(false)}>Cancel</Button>
+              <Button
+                className="ml-2  bg-green-300 border-0"
+                onClick={onRespond}
+                loading={loading}
+              >
+                {loading ? "Responding..." : "Respond"}
+              </Button>
+            </div>
+          </Card>
+        )}
       </Timeline.Item>
     );
   };
@@ -158,7 +197,10 @@ const TimelineComments = () => {
         <Timeline className="mt-4">
           {comments?.map((item, index) => (
             <Fragment key={item.type + index}>
-              <CommentItem timeline={item} />
+              <CommentItem
+                timeline={item}
+                isLast={isLastChild(comments, index)}
+              />
             </Fragment>
           ))}
         </Timeline>
